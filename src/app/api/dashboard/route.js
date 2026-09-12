@@ -72,6 +72,7 @@ export async function GET() {
       let readyForProcurement = 0;
       let completedCount = 0;
       let awaitingVcCount = 0;
+      let rejectedCount = 0;
 
       for (const requisition of possible) {
         const step = requisition.approvalChain?.[requisition.currentStepIndex];
@@ -97,6 +98,10 @@ export async function GET() {
         if (assignedToMe && requisition.status === REQUISITION_STATUS.APPROVED && requisition.procurementStatus === "completed") {
           completedCount += 1;
         }
+
+        if (requisition.status === REQUISITION_STATUS.REJECTED && (assignedToMe || String(requisition.procurementAssignedBy || "") === String(auth.sub))) {
+          rejectedCount += 1;
+        }
       }
 
       return NextResponse.json({
@@ -106,6 +111,7 @@ export async function GET() {
         readyForProcurement,
         processingCount,
         completedCount,
+        rejectedCount,
         totalProcurementItems: readyForProcurement + processingCount + completedCount,
       });
     }
