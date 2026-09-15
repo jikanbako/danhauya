@@ -89,8 +89,32 @@ const draftItemSchema =
 
     sourceRequisitionId: Joi.string()
       .allow(null, ""),
-  });
 
+    /*
+     * --------------------------------------------------
+     * PROCUREMENT MARKET-SURVEY FIELDS
+     * --------------------------------------------------
+     *
+     * These are allowed when Procurement edits a
+     * requisition during market survey / returned
+     * requisition review.
+     */
+
+    requestedUnitCost: Joi.number()
+      .min(0)
+      .allow(null),
+
+    requestedTotalCost: Joi.number()
+      .min(0)
+      .allow(null),
+
+    procurementUnitCost: Joi.number()
+      .min(0)
+      .allow(null),
+
+    procurementNote: Joi.string()
+      .allow(null, ""),
+  });
 /*
  * --------------------------------------------------
  * DRAFT
